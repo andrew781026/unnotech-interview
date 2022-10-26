@@ -14,13 +14,14 @@
 import {defineComponent, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 import {getSingleBook, singleBook} from './useBook'
+import {isAddPage} from './useMyRoute'
 
 export default defineComponent({
   name: 'DetailView',
   setup() {
     const route = useRoute()
     onMounted(async () => {
-      await getSingleBook(route.params.id, singleBook.value)
+      if (!isAddPage) await getSingleBook(route.params.id, singleBook.value)
     })
     return {book: singleBook}
   }

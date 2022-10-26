@@ -3,7 +3,9 @@ module.exports = {
   plugins: [
     require('daisyui'),
     // require('@tailwindcss/forms'),
-    // require('@tailwindcss/line-clamp')
+
+    // ref : https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp
+    require('@tailwindcss/line-clamp')
   ],
   daisyui: {
     themes: [

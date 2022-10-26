@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {title: '單本書籍', mode: 'edit'}
   },
   {
-    path: '/add/:id',
+    path: '/add',
     name: 'add',
     component: () => import('../views/DetailView.vue'),
     meta: {title: '單本書籍', mode: 'add'}
