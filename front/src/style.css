@@ -1,0 +1,10 @@
+:root {
+  --nav-height: 4rem;
+  --primary-color: #53c28f;
+  --primary-color-dark: #429870;
+  --white-smoke: #f5f5f5;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
