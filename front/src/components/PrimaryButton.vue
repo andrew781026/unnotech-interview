@@ -1,6 +1,6 @@
 <template>
-  <button class="btn"
-          :class="{'btn-primary':type === 'primary','rounded-full':round}">
+  <button class="btn btn-accent rounded-full text-xl text-white"
+          :class="{'btn-disabled':disabled}">
     <slot></slot>
   </button>
 </template>
@@ -9,8 +9,7 @@
 export default {
   name: 'PrimaryButton',
   props: {
-    type: String,
-    round: Boolean
+    disabled: Boolean
   }
 }
 </script>

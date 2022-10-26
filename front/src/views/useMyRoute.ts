@@ -1,5 +1,5 @@
-import {computed} from 'vue'
-import {NavigationFailure, useRoute, useRouter} from 'vue-router'
+import {NavigationFailure, useRouter, RouteLocationNormalizedLoaded} from 'vue-router'
+import {computed} from "vue";
 
 interface result {
   toListPage: () => Promise<NavigationFailure | void | undefined>
@@ -16,9 +16,3 @@ export const useRouterCustom = (): result => {
   const toAddPage = () => router.push({name: 'add'})
   return {toListPage, toViewPage, toEditPage, toAddPage}
 }
-
-// 初次載入時， vue-router 可能尚未載入完成，router 就需要取資料了！
-export const isListPage = computed(() => useRoute().name === 'list')
-export const isViewPage = computed(() => useRoute().name === 'view')
-export const isEditPage = computed(() => useRoute().name === 'edit')
-export const isAddPage = computed(() => useRoute().name === 'add')

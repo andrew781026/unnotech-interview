@@ -6,7 +6,6 @@ import {Book, EmptyObject} from '../types/book'
 export const dialogShow = ref(false)
 export const dialogType = ref('')
 export const isLoading = ref(false)
-export const mode = ref('list') // list, edit, create or view
 
 // 細節頁面的 singleBook
 export const singleBook: Ref<Book | EmptyObject> = ref({})
@@ -18,9 +17,7 @@ export const openLoader = () => isLoading.value = true
 export const closeLoader = () => isLoading.value = false
 
 export const setSingleBook = (newSingleBook: Book) => {
-  singleBook.value = {
-    ...newSingleBook
-  }
+  singleBook.value = newSingleBook || {}
 }
 
 export const getSingleBook = async (id: number) => {
@@ -30,23 +27,23 @@ export const getSingleBook = async (id: number) => {
   closeLoader()
 }
 
-export const updateSingleBook = (id: string, newSingleBook: Book) => {
+export const updateSingleBook = (router: Router) => (id: string, newSingleBook: Book) => {
   openLoader()
-  BookService.update(id, newSingleBook)
+  return BookService.update(id, newSingleBook)
     .then(book => {
       singleBook.value = book
-      mode.value = 'view'
+      router.push({name: 'view', params: {id: book.id}})
     })
     .catch(console.error)
     .finally(() => closeLoader())
 }
 
-export const addSingleBook = (newSingleBook: Book, router: Router) => {
+export const addSingleBook = (router: Router) => (newSingleBook: Book) => {
   openLoader()
-  BookService.add(newSingleBook)
+  return BookService.add(newSingleBook)
     .then(book => {
       singleBook.value = book
-      router.push({name: 'detail', params: {id: book.id}})
+      router.push({name: 'view', params: {id: book.id}})
     })
     .catch(console.error)
     .finally(() => closeLoader())

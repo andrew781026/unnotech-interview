@@ -24,7 +24,6 @@ export default {
 </script>
 
 <style>
-
 main {
   overflow: auto;
   height: calc(100vh - var(--nav-height));
@@ -39,33 +38,5 @@ main {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-/* common css */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: '思源黑體', '微軟正黑體', '蘋方黑體', sans-serif;
-  margin: 0;
-  min-height: 100vh;
-}
-
-#app {
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

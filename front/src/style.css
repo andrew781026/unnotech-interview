@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
 :root {
   --nav-height: 4rem;
   --primary-color: #53c28f;
@@ -8,3 +10,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  img{
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: '思源黑體', '微軟正黑體', '蘋方黑體', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+  }
+}
