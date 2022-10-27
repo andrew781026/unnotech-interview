@@ -2,8 +2,6 @@ module.exports = {
   content: ['./src/**/*.{vue,js,ts}'],
   plugins: [
     require('daisyui'),
-    // require('@tailwindcss/forms'),
-
     // ref : https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp
     require('@tailwindcss/line-clamp')
   ],
