@@ -37,19 +37,29 @@ export default defineComponent({
   name: 'NavBar',
   setup() {
     const route = useRoute()
-    const {toAddPage, toEditPage} = useRouterCustom()
+    const {
+      toListPage,
+      toViewPage,
+      toAddPage,
+      toEditPage,
+      isViewPage,
+      isAddPage,
+      isListPage,
+      isEditPage
+    } = useRouterCustom()
 
     const showBack = computed(() => route.name !== 'list')
-    const isListPage = computed(() => route.name === 'list')
-    const isViewPage = computed(() => route.name === 'view')
-    const goBack = () => history.back()
+    const goBack = () => {
+      if (isViewPage.value || isAddPage.value) toListPage()
+      else if (isEditPage.value) toViewPage(singleBook.value.id)
+    }
     const title = computed(() => {
       if (route.name === 'list') return '書本列表'
       else if (route.name === 'add') return '新增書本'
       return singleBook.value.title
     })
 
-    return {book: singleBook,toAddPage, toEditPage, showBack, isListPage, isViewPage, goBack, title}
+    return {book: singleBook, toAddPage, toEditPage, showBack, isListPage, isViewPage, goBack, title}
   }
 })
 </script>

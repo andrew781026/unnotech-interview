@@ -1,15 +1,15 @@
 <template>
   <div class="container mx-auto flex flex-col items-center py-4">
-    <img class="h-128 max-w-full px-4" :src="book.image" alt="圖片">
+    <img class="h-80 max-w-full px-4" :src="book.image || defaultImage" alt="圖片">
 
     <!-- 新增/修改的編輯區域 -->
     <div class="flex flex-col gap-4 sm:w-96 w-full p-4" v-if="!isViewPage">
       <input class="p-4" type="text" v-model="book.title" placeholder="名稱">
-      <span v-if="v$.title.$errors.length > 0" class="text-error font-bold">錯誤訊息錯誤訊息錯誤訊息錯誤訊息</span>
+      <span v-if="errors.title?.length > 0" class="text-error font-bold">{{ errors.title[0] }}</span>
       <input class="p-4" type="text" v-model="book.author" placeholder="作者">
-      <span class="text-error font-bold">錯誤訊息錯誤訊息錯誤訊息錯誤訊息</span>
+      <span v-if="errors.author?.length > 0" class="text-error font-bold">{{ errors.author[0] }}</span>
       <textarea class="p-4 h-64 resize-none" type="text" v-model="book.description" placeholder="備註"/>
-      <span class="text-error font-bold">錯誤訊息錯誤訊息錯誤訊息錯誤訊息</span>
+      <span v-if="errors.description?.length > 0" class="text-error font-bold">{{ errors.description[0] }}</span>
     </div>
 
     <!-- 查看的文字區域 -->
@@ -21,63 +21,109 @@
 
     <!-- 修改的按鈕區塊 -->
     <div class="flex gap-4 sm:w-96 w-full p-4" v-if="isEditPage">
-      <PrimaryButton class="flex-1" disabled @click="cancel">取消</PrimaryButton>
-      <PrimaryButton class="flex-1" @click="updateSingleBook(book.id,book)">修改</PrimaryButton>
+      <PrimaryButton class="flex-1" :disabled="!isDirty" @click="cancel">取消</PrimaryButton>
+      <PrimaryButton class="flex-1" @click="update">修改</PrimaryButton>
     </div>
 
     <!-- 新增的按鈕區塊 -->
     <div class="flex gap-4 sm:w-96 w-full p-4" v-if="isAddPage">
-      <PrimaryButton class="flex-1" disabled @click="cancel">取消</PrimaryButton>
-      <PrimaryButton class="flex-1" @click="addSingleBook(book)">修改</PrimaryButton>
+      <PrimaryButton class="flex-1" :disabled="!isDirty" @click="cancel">取消</PrimaryButton>
+      <PrimaryButton class="flex-1" @click="add">新增</PrimaryButton>
     </div>
   </div>
 </template>
 
 <script>
-import {computed, defineComponent, onMounted} from 'vue'
+import {ref, watch, defineComponent, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 import {getSingleBook, singleBook, updateSingleBook, addSingleBook} from './useBook'
 import defaultImage from '../assets/icons/books.svg'
 import PrimaryButton from "@/components/PrimaryButton.vue"
 import {useRouterCustom} from "./useMyRoute"
-import {useVuelidate} from '@vuelidate/core'
-import {required, email} from '@vuelidate/validators'
+import validator from "validate.js"
+
+const valid = (book) => {
+
+  const constraints = {
+    "title": {
+      presence: {
+        allowEmpty: false,
+        // 去除預設參數名稱 ref : https://github.com/ansman/validate.js/issues/68
+        message: "^名稱不能為空"
+      }
+    },
+    "author": {presence: {allowEmpty: false, message: "^作者不能為空"}},
+  };
+
+  return validator(book, constraints);
+};
 
 export default defineComponent({
   name: 'DetailView',
+  components: {
+    PrimaryButton
+  },
   setup() {
+    const isDirty = ref(false)
+    const book = ref({})
+    const errors = ref([])
     const route = useRoute()
-    const {toAddPage, toEditPage, toViewPage} = useRouterCustom()
+    const {toListPage, toViewPage, isViewPage, isAddPage, isEditPage} = useRouterCustom()
+
     onMounted(async () => {
-      if (route !== 'add') await getSingleBook(route.params.id, singleBook.value)
+      if (isViewPage.value || isEditPage.value) {
+        await getSingleBook(route.params.id)
+        book.value = Object.assign({}, singleBook.value)
+      }
+
+      watch(() => book.value, () => isDirty.value = true, {deep: true})
     })
-    const isViewPage = computed(() => route.name === 'view')
-    const isAddPage = computed(() => route.name === 'add')
-    const isEditPage = computed(() => route.name === 'edit')
+
+    const cancel = () => {
+      book.value = Object.assign({}, defaultBook.value)
+      isDirty.value = false
+
+      if (isAddPage.value) toListPage()
+      else if (isEditPage.value) toViewPage(book.value.id)
+    };
+
+    const add = async () => {
+      const validInfo = valid(book.value)
+      if (validInfo) this.errors = validInfo
+      else {
+        const newBook = await addSingleBook(book.value)
+        toViewPage(newBook.id)
+      }
+    };
+
+    const update = async () => {
+      const validInfo = valid(book.value)
+      if (validInfo) this.errors = validInfo
+      else {
+        const newBook = await updateSingleBook(book.value.id, book.value)
+        toViewPage(newBook.id)
+      }
+    };
 
     return {
-      book: singleBook,
+      book,
+      errors,
+      defaultBook: singleBook,
       defaultImage,
       isViewPage,
       isAddPage,
       isEditPage,
+      isDirty,
       updateSingleBook,
       addSingleBook,
-      v$: useVuelidate()
+      toListPage,
+      toViewPage,
+      valid,
+      cancel,
+      add,
+      update
     }
   },
-  components: {
-    PrimaryButton
-  },
-  validations () {
-    return {
-      book:{
-        title: { // Matches this.book.firstName
-          required
-        },
-      },
-    }
-  }
 })
 </script>
 

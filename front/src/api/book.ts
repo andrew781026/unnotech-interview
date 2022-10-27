@@ -41,7 +41,7 @@ const BookService = {
     })
   },
 
-  update: function (id: string, book: Book): Promise<Book> {
+  update: function (id: number, book: Book): Promise<Book> {
     return new Promise((resolve, reject) => {
       return DomainCommon.fetchPatch({
         url: `${DomainCommon.getApiUrl()}/books/${id}`,

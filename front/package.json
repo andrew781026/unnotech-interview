@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "vue": "^3.2.37",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",

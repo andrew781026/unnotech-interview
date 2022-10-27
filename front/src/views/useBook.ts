@@ -1,5 +1,4 @@
 import {onMounted, ref, Ref} from 'vue'
-import {Router} from 'vue-router'
 import BookService from '../api/book'
 import {Book, EmptyObject} from '../types/book'
 
@@ -16,6 +15,18 @@ export const bookList: Ref<Array<Book>> = ref([])
 export const openLoader = () => isLoading.value = true
 export const closeLoader = () => isLoading.value = false
 
+const loaderWrapper = async (fn: () => Promise<any>) => {
+  try {
+    openLoader()
+    const result = await fn()
+    closeLoader()
+    return result
+  } catch (e) {
+    console.error(e)
+    closeLoader()
+  }
+}
+
 export const setSingleBook = (newSingleBook: Book) => {
   singleBook.value = newSingleBook || {}
 }
@@ -27,36 +38,24 @@ export const getSingleBook = async (id: number) => {
   closeLoader()
 }
 
-export const updateSingleBook = (router: Router) => (id: string, newSingleBook: Book) => {
-  openLoader()
-  return BookService.update(id, newSingleBook)
-    .then(book => {
-      singleBook.value = book
-      router.push({name: 'view', params: {id: book.id}})
-    })
-    .catch(console.error)
-    .finally(() => closeLoader())
-}
+export const updateSingleBook = async (id: number, newSingleBook: Book) => loaderWrapper(async () => {
+  const book = await BookService.update(id, newSingleBook)
+  singleBook.value = book
+  return book
+})
 
-export const addSingleBook = (router: Router) => (newSingleBook: Book) => {
-  openLoader()
-  return BookService.add(newSingleBook)
-    .then(book => {
-      singleBook.value = book
-      router.push({name: 'view', params: {id: book.id}})
-    })
-    .catch(console.error)
-    .finally(() => closeLoader())
-}
+export const addSingleBook = async (newSingleBook: Book) => loaderWrapper(async () => {
+  const book = await BookService.add(newSingleBook)
+  singleBook.value = book
+  return book
+})
 
 // 使用 BookService 取得 book 的列表資料
-export const listAllBooks = () => {
-  openLoader()
-  BookService.list()
-    .then(books => bookList.value = books)
-    .catch(console.error)
-    .finally(() => closeLoader())
-}
+export const listAllBooks = async () => loaderWrapper(async () => {
+  const books = await  BookService.list()
+  bookList.value = books
+  return books
+})
 
 export const useBook = (bookId: number) => {
   onMounted(() => {

@@ -7,16 +7,17 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
+import {defineComponent, onMounted} from 'vue'
 import Card from '@/components/Card.vue'
 import PrimaryButton from '@/components/PrimaryButton.vue'
-import {bookList, setSingleBook, useBook, listAllBooks} from './useBook'
+import {bookList,  listAllBooks, setSingleBook} from './useBook'
 import {useRouterCustom} from './useMyRoute'
 
 export default defineComponent({
   name: 'ListView',
   setup() {
-    useBook()
+    onMounted(() => listAllBooks())
+
     const {toViewPage} = useRouterCustom()
 
     const viewDetail = book => {
@@ -24,7 +25,7 @@ export default defineComponent({
       toViewPage(book.id)
     }
 
-    return {bookList, getMoreBooks: listAllBooks, viewDetail}
+    return {bookList, viewDetail}
   },
   components: {
     Card,
