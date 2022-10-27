@@ -50,11 +50,11 @@
 <script>
 import {ref, watch, defineComponent, onMounted} from 'vue'
 import {useRoute} from 'vue-router'
-import {getSingleBook, singleBook, updateSingleBook, addSingleBook} from './useBook'
+import {getSingleBook, singleBook, updateSingleBook, addSingleBook} from '../controllers/useBook'
 import defaultImage from '../assets/icons/books.svg'
 import PrimaryButton from "@/components/PrimaryButton.vue"
 import Uploadzone from "@/components/Uploadzone.vue"
-import {useRouterCustom} from "./useMyRoute"
+import {useRouterCustom} from "../controllers/useMyRoute"
 import validator from "validate.js"
 
 const valid = (book) => {

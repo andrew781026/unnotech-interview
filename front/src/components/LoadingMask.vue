@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {isLoading} from '../views/useBook.ts'
+import {isLoading} from '../controllers/useBook.ts'
 
 export default {
   name: 'LoadingMask',

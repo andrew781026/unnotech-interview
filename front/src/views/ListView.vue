@@ -10,8 +10,8 @@
 import {defineComponent, onMounted} from 'vue'
 import Card from '@/components/Card.vue'
 import PrimaryButton from '@/components/PrimaryButton.vue'
-import {bookList,  listAllBooks, setSingleBook} from './useBook'
-import {useRouterCustom} from './useMyRoute'
+import {bookList, listAllBooks, setSingleBook} from '../controllers/useBook'
+import {useRouterCustom} from '../controllers/useMyRoute'
 
 export default defineComponent({
   name: 'ListView',
