@@ -13,6 +13,7 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  base: '/unnotech-interview/',
   build: {
     rollupOptions: {
       input: {
