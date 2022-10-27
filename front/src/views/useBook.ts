@@ -1,9 +1,7 @@
-import {onMounted, ref, Ref} from 'vue'
+import {ref, Ref} from 'vue'
 import BookService from '../api/book'
 import {Book, EmptyObject} from '../types/book'
 
-export const dialogShow = ref(false)
-export const dialogType = ref('')
 export const isLoading = ref(false)
 
 // 細節頁面的 singleBook
@@ -53,10 +51,3 @@ export const listAllBooks = async () => loaderWrapper(async () => {
   bookList.value = books
   return books
 })
-
-export const useBook = (bookId: number) => {
-  onMounted(() => {
-    if (bookId) getSingleBook(bookId)
-    else listAllBooks()
-  })
-}
