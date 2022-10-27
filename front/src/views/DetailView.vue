@@ -2,7 +2,7 @@
   <div class="container mx-auto flex flex-col items-center py-4">
 
     <!-- 圖片的區域 -->
-    <Uploadzone
+    <UploadZone
       v-if="!book.image"
       class="bg-white h-80 w-80 rounded"
       @addImgUrl="addImgUrl"/>
@@ -53,7 +53,7 @@ import {useRoute} from 'vue-router'
 import {getSingleBook, singleBook, updateSingleBook, addSingleBook} from '../controllers/useBook'
 import defaultImage from '../assets/icons/books.svg'
 import PrimaryButton from "@/components/PrimaryButton.vue"
-import Uploadzone from "@/components/Uploadzone.vue"
+import UploadZone from "@/components/UploadZone.vue"
 import {useRouterCustom} from "../controllers/useMyRoute"
 import validator from "validate.js"
 
@@ -77,7 +77,7 @@ export default defineComponent({
   name: 'DetailView',
   components: {
     PrimaryButton,
-    Uploadzone
+    UploadZone
   },
   setup() {
     const isDirty = ref(false)
