@@ -29,7 +29,7 @@
 
 <script>
 import {computed, defineComponent, onMounted} from 'vue'
-import {getSingleBook, singleBook} from '../views/useBook.ts'
+import {singleBook} from '../views/useBook.ts'
 import {useRouterCustom} from '../views/useMyRoute.ts'
 import {useRoute} from 'vue-router'
 

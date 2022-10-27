@@ -1,6 +1,20 @@
 <template>
   <div class="container mx-auto flex flex-col items-center py-4">
-    <img class="h-80 max-w-full px-4" :src="book.image || defaultImage" alt="圖片">
+
+    <!-- 圖片的區域 -->
+    <Uploadzone
+      v-if="!book.image"
+      class="bg-white h-80 w-80 rounded"
+      @addImgUrl="addImgUrl"/>
+    <div v-else class="relative mx-4">
+      <img class="h-80 max-w-full" :src="book.image" alt="圖片"/>
+      <SvgIcon
+        name="cancel"
+        class="hover:scale-125 text-error cursor-pointer absolute top-0 right-0 m-2"
+        :size="24"
+        @click="clearImgUrl"
+      />
+    </div>
 
     <!-- 新增/修改的編輯區域 -->
     <div class="flex flex-col gap-4 sm:w-96 w-full p-4" v-if="!isViewPage">
@@ -39,6 +53,7 @@ import {useRoute} from 'vue-router'
 import {getSingleBook, singleBook, updateSingleBook, addSingleBook} from './useBook'
 import defaultImage from '../assets/icons/books.svg'
 import PrimaryButton from "@/components/PrimaryButton.vue"
+import Uploadzone from "@/components/Uploadzone.vue"
 import {useRouterCustom} from "./useMyRoute"
 import validator from "validate.js"
 
@@ -61,7 +76,8 @@ const valid = (book) => {
 export default defineComponent({
   name: 'DetailView',
   components: {
-    PrimaryButton
+    PrimaryButton,
+    Uploadzone
   },
   setup() {
     const isDirty = ref(false)
@@ -105,6 +121,9 @@ export default defineComponent({
       }
     };
 
+    const addImgUrl = (url) => book.value.image = url
+    const clearImgUrl = () => book.value.image = undefined
+
     return {
       book,
       errors,
@@ -121,7 +140,9 @@ export default defineComponent({
       valid,
       cancel,
       add,
-      update
+      update,
+      addImgUrl,
+      clearImgUrl
     }
   },
 })

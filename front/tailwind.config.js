@@ -1,5 +1,8 @@
 module.exports = {
-  content: ['./src/**/*.{vue,js,ts}'],
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts}',
+  ],
   plugins: [
     require('daisyui'),
     // ref : https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp
