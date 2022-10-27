@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import LazyImage from '@/components/LazyImage.vue'
 import defaultImage from '../assets/icons/books.svg'
 
 export default defineComponent({
@@ -25,9 +24,6 @@ export default defineComponent({
       type: Object,
       default: {}
     }
-  },
-  components: {
-    LazyImage
   },
   data() {
     return {
