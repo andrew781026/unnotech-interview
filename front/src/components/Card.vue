@@ -21,7 +21,10 @@ import defaultImage from '../assets/icons/books.svg'
 export default defineComponent({
   name: 'PureCard',
   props: {
-    book: Object
+    book: {
+      type: Object,
+      default: {}
+    }
   },
   components: {
     LazyImage
