@@ -1,0 +1,1 @@
+import{_ as s,b as a,c as n,j as o,n as r}from"./main.35d3205d.js";const m="/assets/books.c4511f81.svg",c={name:"PrimaryButton",props:{disabled:Boolean}};function l(t,d,e,i,u,b){return a(),n("button",{class:r(["btn btn-accent rounded-full text-xl text-white",{"btn-disabled":e.disabled}])},[o(t.$slots,"default")],2)}const p=s(c,[["render",l]]);export{p as P,m as d};
